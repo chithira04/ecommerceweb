@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+     {% if categoryy %}
+           {{categoryy.description|truncatewords:155}}
+     {% else %}
+            Welcome to DHRUVA store where you can buys different items....
+     {% endif %}
+{% endblock %}
+
+{% block title %}
+     {% if categoryy %}
+           {{categoryy.name}} - DHRUVA Store
+     {% else %}
+            See our new collections - DHRUVA Store
+     {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if categoryy %}
+       <div>
+           <div class="row my_row_class">
+               <div class="mx-auto">
+               <p><a href="{%  url 'ecommerceapp:allProductCat' %}">Our Product Collections</a></p>
+               </div>
+           </div>
+       </div>
+{% endif %}
+       <div class="mx-auto">
+           {% if categoryy %}
+               <img class="my_image" src="{{ categoryy.image.url }}" alt="{{ categoryy.name }}" style="width:1106px;height:600px;">
+       </div>
+       <br>
+       <div>
+           <h2 class="text-center my_title">{{ categoryy.name }}</h2>
+           <p class="text-justify">{{ categoryy.description }}</p>
+       </div>
+            {% else %}
+                <div>
+                <img class="my_image my_image_padding" src="{% static 'img/banner.png' %}" alt="our products" style="width:1106px;">
+                </div>
+            <br>
+<div>
+    <h1 class="text-center my_title">Our product collections</h1>
+    <p class="text-justify">DHRUVA store sells clothing, furniture, toys, food, and accessories geared toward young children and their family. Your store may be a big box location that offers affordable items targeted at the majority of families or a boutique featuring unique designs and products with a higher purchase price.</p>
+            {% endif %}
+</div>
+        <div class="container">
+            <div class="row mx_auto">
+                {% for product in products.object_list %}
+                <div class="my_bottom_margin col-9 col-sm-12 col-md-4 xol-lg-4">
+                    <div class="card text-center" style="min-width:18em;">
+                        <a href="{{product.get_url}}"><img class="card-image-top my_image" src="{{product.image.url}}" alt="{{ product.name }}" style="width:200px;height:200px;" ></a>
+                        <div class="card-body">
+                            <h4>{{ product.name }}</h4>
+                            <p>{{ product.price }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="mx-auto">
+                {% if products.paginator.num_pages > 1 %}
+
+                <br>
+                <div class="text-center">
+                    {% for pg in products.paginator.page_range %}
+                       <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            <br>
+        </div>
+{% endblock %}
+
